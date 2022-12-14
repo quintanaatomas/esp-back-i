@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    fetch-registry: true
+    registry-with-eureka: false
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+info:
+  app:
+    name: ${spring.application.name}
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: apiMovie
+          uri: lb://api-movie
+          predicates:
+            - Path=/movies/**
+        - id: apiCatalog
+          uri: lb://api-catalog
+          predicates:
+            - Path=/catalog/**
+        - id: apiSeries
+          uri: lb://api-serie
+          predicates:
+            - Path=/series/**
+  application:
+    name: api-gateway
+  zipkin:
+    base-url: http://localhost:9411
+    enabled: true
